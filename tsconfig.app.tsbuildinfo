@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/components/footer.tsx","./src/components/nav.tsx","./src/components/reveal.tsx","./src/components/icons.tsx","./src/pages/about.tsx","./src/pages/blog.tsx","./src/pages/contact.tsx","./src/pages/home.tsx","./src/pages/services.tsx","./src/pages/works.tsx","./src/utils/placeholders.ts"],"version":"5.9.3"}
