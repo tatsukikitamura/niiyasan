@@ -1071,6 +1071,107 @@
     border-color: var(--accent);
   }
 
+  /* Hamburger (mobile only) */
+  .nav-burger {
+    display: none;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    border-radius: 999px;
+    border: 1px solid var(--ink-300);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .nav-burger:hover {
+    border-color: var(--ink-700);
+  }
+  .nav-burger span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    background: var(--ink-800);
+    transition: transform 0.3s ease;
+  }
+  .nav-burger.open span:first-child {
+    transform: translateY(3.25px) rotate(45deg);
+  }
+  .nav-burger.open span:last-child {
+    transform: translateY(-3.25px) rotate(-45deg);
+  }
+
+  /* Mobile drawer */
+  .nav-drawer {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--ink-50);
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+    overflow-y: auto;
+  }
+  .nav-drawer.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-drawer-inner {
+    padding: 32px var(--gutter) 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nav-drawer-link {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    letter-spacing: -0.015em;
+    color: var(--ink-900);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--ink-200);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    transition: color 0.2s ease;
+  }
+  .nav-drawer-link:hover {
+    color: var(--accent);
+  }
+  .nav-drawer-link.active {
+    color: var(--accent);
+  }
+  .nav-drawer-cta {
+    margin-top: 32px;
+    background: var(--ink-900);
+    color: var(--ink-50);
+    padding: 18px 28px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .nav-drawer-cta:hover {
+    background: var(--accent);
+  }
+
   /* Footer */
   .footer {
     background: var(--ink-900);
@@ -1188,6 +1289,9 @@
   @media (max-width: 960px) {
     .nav-links {
       display: none;
+    }
+    .nav-burger {
+      display: flex;
     }
     .sec-head {
       grid-template-columns: 1fr;
