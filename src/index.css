@@ -240,6 +240,7 @@
   .hero-title .row {
     display: block;
     overflow: hidden;
+    padding-top: 0.12em;
   }
   .hero-title .row span {
     display: inline-block;
@@ -1112,6 +1113,7 @@
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 70;
     background: var(--ink-50);
     transform: translateY(-8px);
     opacity: 0;

@@ -48,36 +48,38 @@ export function Nav({ page, setPage }: Props) {
   };
 
   return (
-    <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-      <div className="nav-inner">
-        <a className="nav-logo" onClick={() => go('home')}>
-          <Logo />
-          <span>会社名(仮)</span>
-        </a>
-        <div className="nav-links">
-          {links.map((l) => (
-            <a
-              key={l.id}
-              className={`nav-link ${page === l.id ? 'active' : ''}`}
-              onClick={() => go(l.id)}
-            >
-              {l.label}
-            </a>
-          ))}
-          <a className="nav-cta" onClick={() => go('contact')}>
-            Contact <Arrow s={12} />
+    <>
+      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
+        <div className="nav-inner">
+          <a className="nav-logo" onClick={() => go('home')}>
+            <Logo />
+            <span>会社名(仮)</span>
           </a>
+          <div className="nav-links">
+            {links.map((l) => (
+              <a
+                key={l.id}
+                className={`nav-link ${page === l.id ? 'active' : ''}`}
+                onClick={() => go(l.id)}
+              >
+                {l.label}
+              </a>
+            ))}
+            <a className="nav-cta" onClick={() => go('contact')}>
+              Contact <Arrow s={12} />
+            </a>
+          </div>
+          <button
+            className={`nav-burger ${open ? 'open' : ''}`}
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span />
+            <span />
+          </button>
         </div>
-        <button
-          className={`nav-burger ${open ? 'open' : ''}`}
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span />
-          <span />
-        </button>
-      </div>
+      </nav>
 
       <div className={`nav-drawer ${open ? 'open' : ''}`} aria-hidden={!open}>
         <div className="nav-drawer-inner">
@@ -95,6 +97,6 @@ export function Nav({ page, setPage }: Props) {
           </a>
         </div>
       </div>
-    </nav>
+    </>
   );
 }
