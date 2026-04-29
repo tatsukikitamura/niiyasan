@@ -1,12 +1,20 @@
-import { Arrow } from '../components/icons';
-import { makePlaceholder } from '../utils/placeholders';
+import { Shell, Eyebrow, Btn, PageWrap } from '../components/ui';
+import { photoFor, type PhotoKind } from '../utils/placeholders';
 
-const featured = {
+const featured: {
+  d: string;
+  c: string;
+  t: string;
+  e: string;
+  seed: number;
+  kind: PhotoKind;
+} = {
   d: '2026.04.18',
   c: 'News',
   t: '新しいスタジオを、麻布十番にオープンしました。',
   e: '2018年、中野の小さな部屋から始まったわたしたちの仕事は、いま、麻布十番の新しい場所へと移ります。広くなったわけではありません。ただ、もう少しだけ、よい音で録れる部屋ができました。',
-  seed: 9,
+  seed: 1,
+  kind: 'studio',
 };
 
 const posts = [
@@ -22,59 +30,69 @@ const posts = [
 
 export function BlogPage() {
   return (
-    <div className="page">
-      <section className="shell blog-hero">
-        <span className="eyebrow">Journal — お知らせ・日々の記録</span>
-        <h1 style={{ marginTop: 24 }}>かきとめる。</h1>
-        <p className="lede" style={{ marginTop: 24, maxWidth: 640 }}>
-          仕事のニュース、現場の覚え書き、アーティストとの会話。
-          <br />
-          あなたが知る前に、わたしたちが忘れてしまわないように。
-        </p>
-      </section>
+    <PageWrap>
+      <Shell>
+        <section className="pb-16 pt-[120px] lg:pt-[140px]">
+          <Eyebrow>Journal — お知らせ・日々の記録</Eyebrow>
+          <h1 className="mt-6 font-serif text-hero font-normal text-ink-900">
+            かきとめる。
+          </h1>
+          <p className="mt-6 max-w-[640px] font-serif text-lede text-ink-700">
+            仕事のニュース、現場の覚え書き、アーティストとの会話。
+            <br />
+            あなたが知る前に、わたしたちが忘れてしまわないように。
+          </p>
+        </section>
+      </Shell>
 
-      <section className="shell">
-        <div className="blog-feature">
-          <div className="img-wrap">
+      <Shell>
+        <div className="grid grid-cols-1 items-center gap-12 border-y border-ink-200 py-12 lg:grid-cols-[1.4fr_1fr]">
+          <div className="aspect-[16/10] overflow-hidden bg-ink-300">
             <div
+              className="h-full w-full bg-cover bg-center"
               style={{
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url('${makePlaceholder(featured.seed, { w: 1400, h: 900 })}')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundImage: `url('${photoFor(featured.kind, featured.seed, { w: 1400, h: 900 })}')`,
               }}
             />
           </div>
           <div>
-            <div className="label-row">
-              <span className="label" style={{ color: 'var(--accent)' }}>
+            <div className="mb-4 flex items-center gap-3">
+              <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
                 Featured
               </span>
-              <span className="post-date">{featured.d}</span>
-              <span className="post-cat" style={{ padding: '4px 10px' }}>
+              <span className="font-mono text-[12px] tracking-[0.04em] text-ink-500">
+                {featured.d}
+              </span>
+              <span className="rounded-full border border-ink-300 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-700">
                 {featured.c}
               </span>
             </div>
-            <div className="ttl">{featured.t}</div>
-            <p className="ex">{featured.e}</p>
-            <a className="btn btn-ghost">
-              Read more <Arrow />
-            </a>
+            <div className="mb-4 font-serif text-blog-feature text-ink-900">{featured.t}</div>
+            <p className="mb-6 text-[15px] leading-[1.75] text-ink-600">{featured.e}</p>
+            <Btn variant="ghost">Read more</Btn>
           </div>
         </div>
 
-        <div className="blog-list">
+        <div className="pt-12">
           {posts.map((p, i) => (
-            <div key={i} className="post">
-              <div className="post-date">{p.d}</div>
-              <div className="post-cat">{p.c}</div>
-              <div className="post-ttl">{p.t}</div>
-              <div className="post-arr">↗</div>
+            <div
+              key={i}
+              className="group grid cursor-pointer grid-cols-1 items-center gap-2 border-b border-ink-200 py-6 transition-[padding] duration-300 hover:pl-3 lg:grid-cols-[110px_200px_1fr_100px] lg:gap-8"
+            >
+              <div className="font-mono text-[12px] tracking-[0.04em] text-ink-500">{p.d}</div>
+              <div className="w-fit rounded-full border border-ink-300 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-700">
+                {p.c}
+              </div>
+              <div className="font-serif text-[19px] leading-[1.35] tracking-[-0.005em] text-ink-900">
+                {p.t}
+              </div>
+              <div className="font-mono text-[14px] text-ink-500 transition-[transform,color] duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent lg:justify-self-end">
+                ↗
+              </div>
             </div>
           ))}
         </div>
-      </section>
-    </div>
+      </Shell>
+    </PageWrap>
   );
 }

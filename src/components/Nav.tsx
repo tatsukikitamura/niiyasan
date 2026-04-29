@@ -26,7 +26,6 @@ export function Nav({ page, setPage }: Props) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll while drawer is open. Esc to close.
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -49,50 +48,92 @@ export function Nav({ page, setPage }: Props) {
 
   return (
     <>
-      <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-        <div className="nav-inner">
-          <a className="nav-logo" onClick={() => go('home')}>
+      <nav
+        className={`fixed inset-x-0 top-0 z-[80] border-b transition-[border-color,background] duration-300 bg-[color-mix(in_srgb,var(--ink-50)_88%,transparent)] backdrop-blur-[14px] backdrop-saturate-[1.6] ${
+          scrolled ? 'border-ink-200' : 'border-transparent'
+        }`}
+      >
+        <div className="mx-auto flex h-nav max-w-shell items-center justify-between px-gutter">
+          <a
+            className="flex cursor-pointer items-center gap-2.5 font-serif text-[20px] tracking-[-0.01em]"
+            onClick={() => go('home')}
+          >
             <Logo />
             <span>会社名(仮)</span>
           </a>
-          <div className="nav-links">
-            {links.map((l) => (
-              <a
-                key={l.id}
-                className={`nav-link ${page === l.id ? 'active' : ''}`}
-                onClick={() => go(l.id)}
-              >
-                {l.label}
-              </a>
-            ))}
-            <a className="nav-cta" onClick={() => go('contact')}>
+
+          <div className="hidden items-center gap-8 lg:flex">
+            {links.map((l) => {
+              const active = page === l.id;
+              return (
+                <a
+                  key={l.id}
+                  className={`relative cursor-pointer py-1.5 font-mono text-[11.5px] uppercase tracking-[0.16em] transition-colors duration-200 ${
+                    active
+                      ? 'text-ink-900 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-3 after:bg-accent after:content-[""]'
+                      : 'text-ink-700 hover:text-ink-900'
+                  }`}
+                  onClick={() => go(l.id)}
+                >
+                  {l.label}
+                </a>
+              );
+            })}
+            <a
+              className="group inline-flex cursor-pointer items-center gap-2 rounded-full border border-ink-800 bg-ink-800 px-[18px] py-2.5 font-mono text-[11.5px] uppercase tracking-[0.16em] text-ink-50 transition-all duration-[250ms] hover:border-accent hover:bg-accent"
+              onClick={() => go('contact')}
+            >
               Contact <Arrow s={12} />
             </a>
           </div>
+
           <button
-            className={`nav-burger ${open ? 'open' : ''}`}
+            className={`flex h-10 w-10 cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full border border-ink-300 bg-transparent transition-[background,border-color] duration-200 hover:border-ink-700 lg:hidden`}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            <span />
-            <span />
+            <span
+              className={`block h-[1.5px] w-4 bg-ink-800 transition-transform duration-300 ${
+                open ? 'translate-y-[3.25px] rotate-45' : ''
+              }`}
+            />
+            <span
+              className={`block h-[1.5px] w-4 bg-ink-800 transition-transform duration-300 ${
+                open ? '-translate-y-[3.25px] -rotate-45' : ''
+              }`}
+            />
           </button>
         </div>
       </nav>
 
-      <div className={`nav-drawer ${open ? 'open' : ''}`} aria-hidden={!open}>
-        <div className="nav-drawer-inner">
-          {links.map((l) => (
-            <a
-              key={l.id}
-              className={`nav-drawer-link ${page === l.id ? 'active' : ''}`}
-              onClick={() => go(l.id)}
-            >
-              {l.label}
-            </a>
-          ))}
-          <a className="nav-drawer-cta" onClick={() => go('contact')}>
+      <div
+        className={`fixed inset-x-0 bottom-0 top-nav z-[70] overflow-y-auto bg-ink-50 transition-[transform,opacity] duration-300 ${
+          open
+            ? 'translate-y-0 opacity-100 pointer-events-auto'
+            : '-translate-y-2 opacity-0 pointer-events-none'
+        }`}
+        aria-hidden={!open}
+      >
+        <div className="flex flex-col gap-1 px-gutter pb-12 pt-8">
+          {links.map((l) => {
+            const active = page === l.id;
+            return (
+              <a
+                key={l.id}
+                className={`flex cursor-pointer items-baseline justify-between border-b border-ink-200 py-4 font-serif text-[32px] tracking-[-0.015em] transition-colors duration-200 hover:text-accent ${
+                  active ? 'text-accent' : 'text-ink-900'
+                }`}
+                onClick={() => go(l.id)}
+              >
+                {l.label}
+              </a>
+            );
+          })}
+          <a
+            className="mt-8 inline-flex cursor-pointer items-center justify-center gap-2.5 rounded-full bg-ink-900 px-7 py-[18px] font-mono text-[12px] uppercase tracking-[0.16em] text-ink-50 transition-colors duration-200 hover:bg-accent"
+            onClick={() => go('contact')}
+          >
             Contact <Arrow s={14} />
           </a>
         </div>

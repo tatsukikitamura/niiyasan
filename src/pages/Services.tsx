@@ -1,6 +1,16 @@
-import { makePlaceholder } from '../utils/placeholders';
+import { Shell, Eyebrow, Label, PageWrap } from '../components/ui';
+import { photoFor, type PhotoKind } from '../utils/placeholders';
 
-const items = [
+const items: {
+  n: string;
+  en: string;
+  jp: string;
+  lead: string;
+  desc: string;
+  list: string[];
+  seed: number;
+  kind: PhotoKind;
+}[] = [
   {
     n: '01',
     en: 'Visual',
@@ -16,6 +26,7 @@ const items = [
       'CM / ブランドフィルム',
     ],
     seed: 1,
+    kind: 'music-video',
   },
   {
     n: '02',
@@ -32,6 +43,7 @@ const items = [
       'BGM / ジングル制作',
     ],
     seed: 2,
+    kind: 'music',
   },
   {
     n: '03',
@@ -48,60 +60,58 @@ const items = [
       'アフターレポート / アーカイブ',
     ],
     seed: 3,
+    kind: 'live',
   },
 ];
 
 export function ServicesPage() {
   return (
-    <div className="page">
-      <section className="shell pt-[140px] pb-16">
-        <span className="eyebrow">Services — できること</span>
-        <h1 className="h1 mt-6 max-w-[900px]">
-          つくりたいものを、
-          <br />
-          いちばん近くで、形にする。
-        </h1>
-      </section>
+    <PageWrap>
+      <Shell>
+        <section className="pb-16 pt-[120px] lg:pt-[140px]">
+          <Eyebrow>Services — できること</Eyebrow>
+          <h1 className="mt-6 max-w-[900px] font-serif text-hero font-normal text-ink-900">
+            つくりたいを、
+            <br />
+            <em className="not-italic text-accent">形に。</em>
+          </h1>
+        </section>
+      </Shell>
 
       {items.map((s) => (
-        <section
-          key={s.n}
-          className="shell border-t border-ink-200"
-          style={{ paddingTop: 80, paddingBottom: 80 }}
-        >
-          <div className="service-page-grid">
+        <Shell key={s.n}>
+          <section className="grid grid-cols-1 gap-16 border-t border-ink-200 py-20 lg:grid-cols-2">
             <div>
-              <div className="label">— {s.n} / 03</div>
-              <h2 className="h2 serif mt-4">
-                <em className="italic">{s.en}</em>
-                <span className="block font-sans text-[18px] font-medium text-ink-600 mt-2 tracking-[0.04em]">
+              <Label>— {s.n} / 03</Label>
+              <h2 className="mt-4 font-serif text-h2 font-normal text-ink-900">
+                <em className="not-italic">{s.en}</em>
+                <span className="mt-2 block font-sans text-[18px] font-medium tracking-[0.04em] text-ink-600">
                   {s.jp}
                 </span>
               </h2>
-              <p className="lede mt-8 mb-6">{s.lead}</p>
-              <p className="body-text max-w-[520px]">{s.desc}</p>
-              <ul className="grid grid-cols-2 gap-x-6 gap-y-3 mt-8 max-w-[480px] list-none p-0">
+              <p className="mb-6 mt-8 font-serif text-lede text-ink-700">{s.lead}</p>
+              <p className="max-w-[520px] text-[15px] leading-[1.8] text-ink-600">{s.desc}</p>
+              <ul className="mt-8 grid max-w-[480px] list-none grid-cols-2 gap-x-6 gap-y-3 p-0">
                 {s.list.map((l, i) => (
                   <li
                     key={i}
-                    className="font-sans text-[13px] text-ink-700 flex gap-2 items-baseline"
+                    className="flex items-baseline gap-2 font-sans text-[13px] text-ink-700"
                   >
-                    <span className="text-accent font-mono text-[10px]">○</span>
+                    <span className="font-mono text-[10px] text-accent">○</span>
                     {l}
                   </li>
                 ))}
               </ul>
             </div>
             <div
-              className="bg-ink-200 bg-cover bg-center"
+              className="aspect-[4/5] bg-ink-200 bg-cover bg-center"
               style={{
-                aspectRatio: '4/5',
-                backgroundImage: `url('${makePlaceholder(s.seed + 10, { w: 900, h: 1200, label: s.en[0] })}')`,
+                backgroundImage: `url('${photoFor(s.kind, s.seed + 2, { w: 900, h: 1200 })}')`,
               }}
             />
-          </div>
-        </section>
+          </section>
+        </Shell>
       ))}
-    </div>
+    </PageWrap>
   );
 }
