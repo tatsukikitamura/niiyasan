@@ -9,6 +9,8 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+.claude/
+launch.json
 
 # Logs
 npm-debug.log*
