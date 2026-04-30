@@ -29,7 +29,7 @@ const team = [
 ];
 
 const facts: [string, string][] = [
-  ['会社名', '会社名(仮) / Company Name TBD Inc.'],
+  ['会社名', 'Moovit / Company Name TBD Inc.'],
   ['設立', '2018年4月'],
   ['所在地', '東京都港区麻布十番 1-2-3 麻布スタジオ 4F'],
   ['代表', '新谷 茉莉子'],
