@@ -1,4 +1,4 @@
-# 会社名(仮) — Site
+# Moovit — Site
 
 Vite + React + TypeScript + Tailwind CSS で構築。GitHub Pages へ自動デプロイ。
 
