@@ -22,7 +22,7 @@ export function HomePage({ setPage }: PageProps) {
     },
     {
       n: '02',
-      en: 'Sonic',
+      en: 'Music',
       jp: '楽曲制作',
       desc: '作曲・編曲・録音・ミックス。アーティストの声に寄り添い、世界観を音で立ち上げます。',
       tags: ['Compose', 'Arrange', 'Mix', 'Master'],
