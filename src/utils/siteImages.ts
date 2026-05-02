@@ -71,5 +71,6 @@ export const blogImages = {
 // ヘルパー関数（内部使用）
 // ------------------------------------------------------------
 export function resolveImg(local: string, fallback: string): string {
-  return local || fallback;
+  if (!local) return fallback;
+  return import.meta.env.BASE_URL + local.replace(/^\//, '');
 }
