@@ -1,5 +1,6 @@
 import { Shell, Eyebrow, Label, PageWrap } from '../components/ui';
 import { photoFor, type PhotoKind } from '../utils/placeholders';
+import { servicesImages, resolveImg } from '../utils/siteImages';
 
 const items: {
   n: string;
@@ -78,7 +79,7 @@ export function ServicesPage() {
         </section>
       </Shell>
 
-      {items.map((s) => (
+      {items.map((s, i) => (
         <Shell key={s.n}>
           <section className="grid grid-cols-1 gap-16 border-t border-ink-200 py-20 lg:grid-cols-2">
             <div>
@@ -106,7 +107,7 @@ export function ServicesPage() {
             <div
               className="aspect-[4/5] bg-ink-200 bg-cover bg-center"
               style={{
-                backgroundImage: `url('${photoFor(s.kind, s.seed + 2, { w: 900, h: 1200 })}')`,
+                backgroundImage: `url('${resolveImg(servicesImages[i] ?? '', photoFor(s.kind, s.seed + 2, { w: 900, h: 1200 }))}')`,
               }}
             />
           </section>

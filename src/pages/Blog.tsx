@@ -1,5 +1,6 @@
 import { Shell, Eyebrow, Btn, PageWrap } from '../components/ui';
 import { photoFor, type PhotoKind } from '../utils/placeholders';
+import { blogImages, resolveImg } from '../utils/siteImages';
 
 const featured: {
   d: string;
@@ -51,7 +52,7 @@ export function BlogPage() {
             <div
               className="h-full w-full bg-cover bg-center"
               style={{
-                backgroundImage: `url('${photoFor(featured.kind, featured.seed, { w: 1400, h: 900 })}')`,
+                backgroundImage: `url('${resolveImg(blogImages.featured, photoFor(featured.kind, featured.seed, { w: 1400, h: 900 }))}')`,
               }}
             />
           </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Reveal } from '../components/Reveal';
 import { Shell, SecHead, PageWrap } from '../components/ui';
 import { photoFor, type PhotoKind } from '../utils/placeholders';
+import { worksImages, resolveImg } from '../utils/siteImages';
 
 type Cat = 'All' | 'Video' | 'Music' | 'Event';
 
@@ -103,13 +104,15 @@ export function WorksPage() {
 
           <Reveal>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {visible.map((w, i) => (
+              {visible.map((w, i) => {
+                const origIdx = works.indexOf(w);
+                return (
                 <div key={`${w.t}-${i}`} className="group flex cursor-pointer flex-col gap-3">
                   <div className="relative aspect-[4/3] overflow-hidden bg-ink-200">
                     <div
                       className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-smooth group-hover:scale-[1.04]"
                       style={{
-                        backgroundImage: `url('${photoFor(w.kind, w.seed + i, { w: 900, h: 700 })}')`,
+                        backgroundImage: `url('${resolveImg(worksImages[origIdx] ?? '', photoFor(w.kind, w.seed + i, { w: 900, h: 700 }))}')`,
                       }}
                     />
                     <div className="absolute left-3 top-3 rounded-full bg-ink-50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-800">
@@ -124,7 +127,8 @@ export function WorksPage() {
                   </div>
                   <div className="text-[13px] text-ink-500">{w.sub}</div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </Reveal>
         </section>

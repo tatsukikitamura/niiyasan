@@ -1,5 +1,6 @@
 import { Shell, Eyebrow, SecHead, PageWrap } from '../components/ui';
 import { photoFor, makePersonPh } from '../utils/placeholders';
+import { aboutImages, resolveImg } from '../utils/siteImages';
 
 const team = [
   {
@@ -67,7 +68,7 @@ export function AboutPage() {
       <Shell>
         <div
           className="my-16 aspect-[21/9] w-full overflow-hidden bg-ink-300 bg-cover bg-center"
-          style={{ backgroundImage: `url('${photoFor('studio', 0, { w: 2000, h: 900 })}')` }}
+          style={{ backgroundImage: `url('${resolveImg(aboutImages.studio, photoFor('studio', 0, { w: 2000, h: 900 }))}')` }}
         />
       </Shell>
 
@@ -135,7 +136,7 @@ export function AboutPage() {
               <div key={i} className="grid grid-cols-[120px_1fr] items-start gap-6">
                 <div
                   className="h-[150px] w-[120px] overflow-hidden bg-ink-200 bg-cover bg-center"
-                  style={{ backgroundImage: `url('${makePersonPh(i + 1)}')` }}
+                  style={{ backgroundImage: `url('${resolveImg(aboutImages.members[i] ?? '', makePersonPh(i + 1))}')` }}
                 />
                 <div>
                   <div className="font-serif text-[22px] tracking-[-0.01em]">
