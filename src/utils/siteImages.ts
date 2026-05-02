@@ -14,7 +14,7 @@
 // Works ページ（上から順番に作品リストと対応しています）
 // ------------------------------------------------------------
 export const worksImages: string[] = [
-  '',  // 悠針れい / チノカテ
+  '/images/works/仮.png',  // 悠針れい / チノカテ
   '',  // Sleeping Garden — EP
   '',  // Mermaid Live 2026
   '',  // Quiet River
