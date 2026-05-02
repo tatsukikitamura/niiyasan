@@ -95,13 +95,13 @@ export function HomePage({ setPage }: PageProps) {
                 <em className="not-italic">Composition</em>
               </span>
               <Dot />
-              <span className="font-serif">Sound Design</span>
+              <span className="font-serif">楽曲制作</span>
               <Dot />
               <span className="font-serif">
                 <em className="not-italic">Stage</em>
               </span>
               <Dot />
-              <span className="font-serif">Documentary</span>
+              <span className="font-serif">映像制作</span>
               <Dot />
             </div>
           ))}
