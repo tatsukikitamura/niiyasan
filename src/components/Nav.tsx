@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Logo, Arrow } from './icons';
 import type { PageId } from '../types';
 
@@ -59,7 +59,7 @@ export function Nav({ page, setPage }: Props) {
             onClick={() => go('home')}
           >
             <Logo />
-            <span>会社名(仮)</span>
+            <span>Moovit</span>
           </a>
 
           <div className="hidden items-center gap-8 lg:flex">
