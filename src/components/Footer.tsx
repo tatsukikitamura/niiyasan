@@ -81,7 +81,7 @@ export function Footer({ setPage }: Props) {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-6 border-t border-[color-mix(in_srgb,var(--ink-300)_18%,transparent)] pt-6 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-400">
-          <div>© 2026 会社名(仮) Inc.</div>
+          <div>© 2026 Moovit</div>
           <div>東京都 / Tokyo, Japan</div>
         </div>
       </div>
