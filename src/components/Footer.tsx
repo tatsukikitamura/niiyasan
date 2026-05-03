@@ -1,3 +1,4 @@
+import React from 'react';
 import { Arrow } from './icons';
 import type { PageId } from '../types';
 
@@ -39,7 +40,7 @@ export function Footer({ setPage }: Props) {
 
         <div className="grid grid-cols-2 gap-12 border-b border-[color-mix(in_srgb,var(--ink-300)_18%,transparent)] pb-16 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div className="col-span-2 flex flex-col gap-4 lg:col-span-1">
-            <div className="font-serif text-[36px] tracking-[-0.015em] text-ink-50">会社名(仮)</div>
+            <div className="font-serif text-[36px] tracking-[-0.015em] text-ink-50">Moovit</div>
             <p className="max-w-[320px] text-[13px] leading-[1.7] text-ink-400">
               映像、音楽、イベント。表現することすべての裏側に、わたしたちはいます。
             </p>
