@@ -2,16 +2,21 @@ import { ArrowDiag } from '../components/icons';
 import { Reveal } from '../components/Reveal';
 import { Shell, Eyebrow, Label, SecHead, Btn, PageWrap } from '../components/ui';
 import { photoFor, type PhotoKind } from '../utils/placeholders';
-import { homeFeaturedImages, resolveImg } from '../utils/siteImages';
+import { worksImages, resolveImg } from '../utils/siteImages';
+import { works } from '../data/works';
 import type { PageProps } from '../types';
 
+const featSpans: number[] = [7, 5, 4, 8];
+
 export function HomePage({ setPage }: PageProps) {
-  const featured: { t: string; cat: string; span: number; seed: number; kind: PhotoKind; img: string }[] = [
-    { t: '悠針れい / チノカテ MV', cat: 'Music Video', span: 7, seed: 1, kind: 'music-video', img: homeFeaturedImages[0] ?? '' },
-    { t: 'Mermaid Live 2026', cat: 'Event', span: 5, seed: 2, kind: 'live', img: homeFeaturedImages[1] ?? '' },
-    { t: 'Sleeping Garden — EP', cat: 'Music', span: 4, seed: 3, kind: 'music', img: homeFeaturedImages[2] ?? '' },
-    { t: 'Tokyo Sound Walk', cat: 'Documentary', span: 8, seed: 4, kind: 'documentary', img: homeFeaturedImages[3] ?? '' },
-  ];
+  const featured = works.slice(0, 4).map((w, i) => ({
+    t: w.t,
+    cat: w.sub,
+    span: featSpans[i],
+    seed: w.seed,
+    kind: w.kind as PhotoKind,
+    img: worksImages[i] ?? '',
+  }));
 
   const services = [
     {
