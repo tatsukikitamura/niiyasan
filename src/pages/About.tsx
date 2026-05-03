@@ -1,33 +1,7 @@
 import { Shell, Eyebrow, SecHead, PageWrap } from '../components/ui';
-import { photoFor, makePersonPh } from '../utils/placeholders';
+import { photoFor } from '../utils/placeholders';
 import { aboutImages, resolveImg } from '../utils/siteImages';
 
-const team = [
-  {
-    n: '新谷 茉莉子',
-    en: 'Mariko Shintani',
-    r: 'Founder / Director',
-    b: '音楽レーベルでのA&Rを経て、2018年に会社を設立。映像と音楽の境界を曖昧にすることに興味があります。',
-  },
-  {
-    n: '石田 慶',
-    en: 'Kei Ishida',
-    r: 'Composer / Producer',
-    b: 'クラシック作曲科出身。ポップスからアンビエントまで幅広く。最近はモジュラーシンセに夢中。',
-  },
-  {
-    n: '村瀬 拓海',
-    en: 'Takumi Murase',
-    r: 'Filmmaker',
-    b: 'ドキュメンタリー出身。手のひらに収まる物語を、フィルムで残すのが好きです。',
-  },
-  {
-    n: '藤田 結衣',
-    en: 'Yui Fujita',
-    r: 'Producer / PM',
-    b: '現場と数字、両方をやさしく見守るタイプ。アーティストのいちばん近くにいる人。',
-  },
-];
 
 const facts: [string, string][] = [
   ['チーム名', 'Moovit'],
@@ -120,41 +94,6 @@ export function AboutPage() {
         </section>
       </Shell>
 
-      <Shell>
-        <section className="py-section-tight">
-          <SecHead
-            eyebrow="Members"
-            title="小さな、よいチーム。"
-            right={
-              <p className="text-[15px] leading-[1.8] text-ink-600">
-                少数精鋭。ひとり、ひとりが、表現者でもあります。
-              </p>
-            }
-          />
-          <div className="grid grid-cols-1 gap-12 pt-16 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-12">
-            {team.map((m, i) => (
-              <div key={i} className="grid grid-cols-[120px_1fr] items-start gap-6">
-                <div
-                  className="h-[150px] w-[120px] overflow-hidden bg-ink-200 bg-cover bg-center"
-                  style={{ backgroundImage: `url('${resolveImg(aboutImages.members[i] ?? '', makePersonPh(i + 1))}')` }}
-                />
-                <div>
-                  <div className="font-serif text-[22px] tracking-[-0.01em]">
-                    {m.n}
-                    <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
-                      {m.en}
-                    </span>
-                  </div>
-                  <div className="my-2 mb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                    {m.r}
-                  </div>
-                  <div className="text-[13px] leading-[1.7] text-ink-600">{m.b}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </Shell>
 
       <Shell>
         <dl className="grid grid-cols-1 gap-2 border-t border-ink-200 py-16 lg:grid-cols-[200px_1fr] lg:gap-x-12 lg:gap-y-6">
