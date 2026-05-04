@@ -1,0 +1,137 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Shell from '../../components/ui/Shell.astro';
+import SecHead from '../../components/ui/SecHead.astro';
+import PageWrap from '../../components/ui/PageWrap.astro';
+import Reveal from '../../components/Reveal.astro';
+import { resolveImg } from '../../utils/siteImages';
+import { photoFor } from '../../utils/placeholders';
+import { withBase } from '../../utils/url';
+
+const all = await getCollection('works');
+const works = all.sort((a, b) => a.data.order - b.data.order);
+
+const cats = ['All', 'Video', 'Music', 'Event'] as const;
+
+const siteUrl = Astro.site ?? new URL('https://tatsuki.dev/');
+const itemListJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: works.map((w, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: new URL(withBase(`/works/${w.id}/`).replace(/^\//, ''), siteUrl).toString(),
+    name: w.data.title,
+  })),
+};
+---
+
+<Base
+  title="Works — Moovit | 制作実績"
+  description="Moovit がこれまでに手がけた映像・楽曲・イベント制作の実績一覧。アーティストや個人のお客さまとの仕事を、ご紹介できる範囲で掲載しています。"
+  jsonLd={itemListJsonLd}
+>
+  <PageWrap>
+    <Shell>
+      <section class="pb-12 pt-[120px] lg:pt-[140px]">
+        <SecHead class="mb-8" eyebrow="Works — 今までの実績">
+          <Fragment slot="title">記録の、いち部分。</Fragment>
+          <p slot="right" class="text-[15px] leading-[1.8] text-ink-600">
+            アーティストや個人の方との仕事を中心に、ご紹介できるものだけ載せています。NDA 等で公開できないものも、たくさんあります。
+          </p>
+        </SecHead>
+
+        <div id="works-filter" class="mb-12 flex flex-wrap gap-2" role="tablist" aria-label="カテゴリで絞り込み">
+          {
+            cats.map((c, i) => (
+              <button
+                type="button"
+                role="tab"
+                data-cat={c}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                class:list={[
+                  'rounded-full border px-4 py-2 font-mono text-[11px] uppercase tracking-[0.16em] transition-all duration-200',
+                  i === 0
+                    ? 'border-ink-900 bg-ink-900 text-ink-50'
+                    : 'border-ink-300 text-ink-600 hover:border-ink-700 hover:text-ink-900',
+                ]}
+              >
+                {c}
+              </button>
+            ))
+          }
+        </div>
+
+        <Reveal>
+          <div id="works-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {
+              works.map((w, i) => (
+                <a
+                  href={withBase(`/works/${w.id}/`)}
+                  data-cat={w.data.category}
+                  class="works-card group flex flex-col gap-3"
+                  aria-label={`${w.data.title} の詳細を見る`}
+                >
+                  <div class="relative aspect-[4/3] overflow-hidden bg-ink-200">
+                    <div
+                      class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-smooth group-hover:scale-[1.04]"
+                      style={`background-image:url('${resolveImg(w.data.image ?? '', photoFor(w.data.kind, w.data.seed + i, { w: 900, h: 700 }))}')`}
+                    />
+                    <div class="absolute left-3 top-3 rounded-full bg-ink-50 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-800">
+                      {w.data.category}
+                    </div>
+                  </div>
+                  <div class="flex items-baseline justify-between gap-3">
+                    <h2 class="font-serif text-[18px] font-normal tracking-[-0.005em] text-ink-900">
+                      {w.data.title}
+                    </h2>
+                    <div class="font-mono text-[11px] tracking-[0.1em] text-ink-500">
+                      {w.data.year}
+                    </div>
+                  </div>
+                  <p class="text-[13px] text-ink-500">{w.data.subtitle}</p>
+                </a>
+              ))
+            }
+          </div>
+        </Reveal>
+      </section>
+    </Shell>
+  </PageWrap>
+</Base>
+
+<script>
+  // クライアント側フィルタ。SEO のため全カードは初期状態で DOM に存在し、display: none で隠す。
+  const filter = document.getElementById('works-filter');
+  const grid = document.getElementById('works-grid');
+  if (filter && grid) {
+    const buttons = filter.querySelectorAll<HTMLButtonElement>('[data-cat]');
+    const cards = grid.querySelectorAll<HTMLElement>('.works-card');
+
+    const setActive = (active: string) => {
+      cards.forEach((card) => {
+        const c = card.dataset.cat ?? '';
+        card.style.display = active === 'All' || c === active ? '' : 'none';
+      });
+      buttons.forEach((btn) => {
+        const isActive = btn.dataset.cat === active;
+        btn.setAttribute('aria-selected', String(isActive));
+        btn.classList.toggle('border-ink-900', isActive);
+        btn.classList.toggle('bg-ink-900', isActive);
+        btn.classList.toggle('text-ink-50', isActive);
+        btn.classList.toggle('border-ink-300', !isActive);
+        btn.classList.toggle('text-ink-600', !isActive);
+        btn.classList.toggle('hover:border-ink-700', !isActive);
+        btn.classList.toggle('hover:text-ink-900', !isActive);
+      });
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat;
+        if (cat) setActive(cat);
+      });
+    });
+  }
+</script>

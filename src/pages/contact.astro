@@ -1,0 +1,206 @@
+---
+import Base from '../layouts/Base.astro';
+import Shell from '../components/ui/Shell.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Btn from '../components/ui/Btn.astro';
+import PageWrap from '../components/ui/PageWrap.astro';
+
+const TYPES = ['動画制作', '楽曲制作', 'イベント制作', 'その他・複合'];
+const BUDGETS = ['〜50万円', '50〜200万円', '200〜500万円', '500万円〜', '相談したい'];
+
+// TODO: 実運用ドメイン取得後に、運用窓口アドレスへ差し替え
+const MAIL_TO = 'hello@kaisha-kari.jp';
+---
+
+<Base
+  title="Contact — Moovit | お問い合わせ"
+  description="動画・楽曲・イベント制作のご相談はこちらから。Moovit へのお問い合わせは、まずは思っていることを書いていただければ大丈夫です。通常 3 営業日以内に返信します。"
+>
+  <PageWrap>
+    <Shell>
+      <section
+        class="grid grid-cols-1 gap-16 pb-16 pt-[120px] lg:grid-cols-[1fr_1.3fr] lg:pt-[140px]"
+      >
+        <div>
+          <Eyebrow>Contact — お問い合わせ</Eyebrow>
+          <h1 class="mt-6 font-serif text-hero font-normal text-ink-900">
+            <em class="not-italic text-accent">はじめまして。</em>
+          </h1>
+          <p class="mt-6 max-w-[460px] font-serif text-lede text-ink-700">
+            まずは、思っていることを、ぜんぶ書いてください。<br />
+            まとまっていなくて、大丈夫です。
+          </p>
+          <div class="mt-12 flex flex-col gap-6 border-t border-ink-200 pt-12">
+            <div class="flex flex-col gap-1">
+              <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">Email</span>
+              <a class="font-serif text-[22px] tracking-[-0.005em]" href={`mailto:${MAIL_TO}`}>
+                {MAIL_TO}
+              </a>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">Address</span>
+              <span class="font-serif text-[22px] tracking-[-0.005em]">
+                東京都港区麻布十番 1-2-3 4F
+              </span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">Hours</span>
+              <span class="font-serif text-[22px] tracking-[-0.005em]">
+                Mon — Fri / 11:00 — 19:00
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <form
+          id="contact-form"
+          class="flex flex-col"
+          data-mailto={MAIL_TO}
+          action={`mailto:${MAIL_TO}`}
+          method="post"
+          enctype="text/plain"
+        >
+          <div class="flex flex-col gap-2 border-b border-t border-ink-200 py-6">
+            <label for="name" class="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+              お名前 <span class="text-[10px] text-accent">REQUIRED</span>
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="山田 花子"
+              required
+              class="w-full border-0 bg-transparent p-0 py-1 font-serif text-[22px] tracking-[-0.005em] text-ink-900 outline-none placeholder:text-ink-300"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2 border-b border-ink-200 py-6">
+            <label for="email" class="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+              メールアドレス <span class="text-[10px] text-accent">REQUIRED</span>
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="hello@example.com"
+              required
+              class="w-full border-0 bg-transparent p-0 py-1 font-serif text-[22px] tracking-[-0.005em] text-ink-900 outline-none placeholder:text-ink-300"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2 border-b border-ink-200 py-6">
+            <label for="company" class="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+              所属 / 活動名義 <span class="text-[10px] text-ink-400">OPTIONAL</span>
+            </label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              placeholder="フリーランス、〇〇バンド、など"
+              class="w-full border-0 bg-transparent p-0 py-1 font-serif text-[22px] tracking-[-0.005em] text-ink-900 outline-none placeholder:text-ink-300"
+            />
+          </div>
+
+          <div class="flex flex-col gap-2 border-b border-ink-200 py-6">
+            <span class="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+              ご相談内容 <span class="text-[10px] text-accent">REQUIRED</span>
+            </span>
+            <div class="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="ご相談内容">
+              {
+                TYPES.map((t, i) => (
+                  <label class="cursor-pointer">
+                    <input
+                      type="radio"
+                      name="type"
+                      value={t}
+                      class="peer sr-only"
+                      required
+                      checked={i === 0}
+                    />
+                    <span class="inline-block rounded-full border border-ink-300 bg-transparent px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-700 transition-all duration-200 hover:border-ink-700 peer-checked:border-ink-900 peer-checked:bg-ink-900 peer-checked:text-ink-50">
+                      {t}
+                    </span>
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 border-b border-ink-200 py-6">
+            <span class="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+              ご予算の目安 <span class="text-[10px] text-ink-400">OPTIONAL</span>
+            </span>
+            <div class="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="ご予算の目安">
+              {
+                BUDGETS.map((t, i) => (
+                  <label class="cursor-pointer">
+                    <input
+                      type="radio"
+                      name="budget"
+                      value={t}
+                      class="peer sr-only"
+                      checked={i === 0}
+                    />
+                    <span class="inline-block rounded-full border border-ink-300 bg-transparent px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-700 transition-all duration-200 hover:border-ink-700 peer-checked:border-ink-900 peer-checked:bg-ink-900 peer-checked:text-ink-50">
+                      {t}
+                    </span>
+                  </label>
+                ))
+              }
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 border-b border-ink-200 py-6">
+            <label for="detail" class="flex justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-ink-500">
+              くわしく <span class="text-[10px] text-accent">REQUIRED</span>
+            </label>
+            <textarea
+              id="detail"
+              name="detail"
+              placeholder="つくりたいもの、伝えたいこと、なんでも。"
+              required
+              class="min-h-[100px] w-full resize-y border-0 bg-transparent p-0 py-1 font-sans text-[15px] leading-[1.7] text-ink-900 outline-none placeholder:text-ink-300"
+            ></textarea>
+          </div>
+
+          <div class="mt-8 flex flex-wrap items-center justify-between gap-6">
+            <p class="max-w-[320px] text-[12px] text-ink-500">
+              通常、3 営業日以内にお返事します。お急ぎの場合はメールに [URGENT] とお書きください。
+            </p>
+            <Btn variant="primary" as="button" type="submit">送信する</Btn>
+          </div>
+        </form>
+      </section>
+    </Shell>
+  </PageWrap>
+</Base>
+
+<script>
+  // mailto: でユーザの既定メールクライアントを開く方式。
+  // 将来的に Formspree / Netlify Forms 等に差し替える前提のシンプル実装。
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const mailto = form.dataset.mailto ?? '';
+      const name = String(data.get('name') ?? '');
+      const email = String(data.get('email') ?? '');
+      const company = String(data.get('company') ?? '');
+      const type = String(data.get('type') ?? '');
+      const budget = String(data.get('budget') ?? '');
+      const detail = String(data.get('detail') ?? '');
+
+      const subject = `【お問い合わせ】${type} / ${name}`;
+      const body =
+        `お名前: ${name}\n` +
+        `メール: ${email}\n` +
+        `所属: ${company}\n` +
+        `ご相談内容: ${type}\n` +
+        `ご予算の目安: ${budget}\n\n` +
+        `${detail}\n`;
+
+      window.location.href = `mailto:${mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  }
+</script>

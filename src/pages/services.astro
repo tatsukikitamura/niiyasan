@@ -1,0 +1,145 @@
+---
+import Base from '../layouts/Base.astro';
+import Shell from '../components/ui/Shell.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Label from '../components/ui/Label.astro';
+import PageWrap from '../components/ui/PageWrap.astro';
+import { servicesImages, resolveImg } from '../utils/siteImages';
+import { photoFor, type PhotoKind } from '../utils/placeholders';
+
+interface ServiceItem {
+  id: string;
+  n: string;
+  en: string;
+  jp: string;
+  lead: string;
+  desc: string;
+  list: string[];
+  seed: number;
+  kind: PhotoKind;
+}
+
+const items: ServiceItem[] = [
+  {
+    id: 'visual',
+    n: '01',
+    en: 'Visual',
+    jp: '動画制作',
+    lead: '音楽のために、街のために、人のために。映像を、てづくりで。',
+    desc: 'ミュージックビデオから、ドキュメンタリー、ライブ収録、ショートフィルムまで。企画・撮影・編集・カラーグレーディングまで、すべて社内で完結させます。少人数だからこそ、ディテールまで目が行き届きます。',
+    list: [
+      'ミュージックビデオ',
+      'ライブ収録 / 配信',
+      'ドキュメンタリー',
+      'アーティストプロモ',
+      'コンセプト映像',
+      'CM / ブランドフィルム',
+    ],
+    seed: 1,
+    kind: 'music-video',
+  },
+  {
+    id: 'sonic',
+    n: '02',
+    en: 'Sonic',
+    jp: '楽曲制作',
+    lead: '声に寄り添い、世界観を、音で立ち上げる。',
+    desc: '作曲・編曲・レコーディング・ミックス・マスタリングまで、音楽制作の全工程に対応します。シンガーソングライター、バンド、トラックメイカー — それぞれの個性を、いちばん輝く形でパッケージします。',
+    list: [
+      '作曲 / 編曲',
+      'レコーディング',
+      'ミックスダウン',
+      'マスタリング',
+      'サウンドデザイン',
+      'BGM / ジングル制作',
+    ],
+    seed: 2,
+    kind: 'music',
+  },
+  {
+    id: 'stage',
+    n: '03',
+    en: 'Stage',
+    jp: 'イベント制作',
+    lead: '夜の空気ごと、つくる。ライブ、リリパ、ポップアップ。',
+    desc: 'ライブ、リリースパーティ、ポップアップストア、展示。会場選定から舞台演出、音響、照明、配信まで、ひとつの世界観として組み立てます。終わったあとも、誰かの記憶に残る時間を。',
+    list: [
+      'ライブ / ツアー',
+      'リリースパーティ',
+      'ポップアップストア',
+      '展示 / 個展',
+      '舞台演出 / 音響照明',
+      'アフターレポート / アーカイブ',
+    ],
+    seed: 3,
+    kind: 'live',
+  },
+];
+
+const servicesJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': items.map((s) => ({
+    '@type': 'Service',
+    name: `${s.en} — ${s.jp}`,
+    description: s.desc,
+    provider: { '@type': 'Organization', name: 'Moovit' },
+    serviceType: s.jp,
+    areaServed: 'Tokyo',
+  })),
+};
+---
+
+<Base
+  title="Services — Moovit | 動画・楽曲・イベント制作"
+  description="動画制作（MV・ドキュメンタリー・ライブ収録）、楽曲制作（作曲・編曲・ミックス・マスタリング）、イベント制作（ライブ・ポップアップ・展示）。Moovit が手がける三つの領域をご紹介します。"
+  jsonLd={servicesJsonLd}
+>
+  <PageWrap>
+    <Shell>
+      <section class="pb-16 pt-[120px] lg:pt-[140px]">
+        <Eyebrow>Services — できること</Eyebrow>
+        <h1 class="mt-6 max-w-[900px] font-serif text-hero font-normal text-ink-900">
+          つくりたいを、<br />
+          <em class="not-italic text-accent">形に。</em>
+        </h1>
+      </section>
+    </Shell>
+
+    {
+      items.map((s, i) => (
+        <Shell>
+          <section
+            id={s.id}
+            class="grid scroll-mt-nav grid-cols-1 gap-16 border-t border-ink-200 py-20 lg:grid-cols-2"
+          >
+            <div>
+              <Label>— {s.n} / 03</Label>
+              <h2 class="mt-4 font-serif text-h2 font-normal text-ink-900">
+                <em class="not-italic">{s.en}</em>
+                <span class="mt-2 block font-sans text-[18px] font-medium tracking-[0.04em] text-ink-600">
+                  {s.jp}
+                </span>
+              </h2>
+              <p class="mb-6 mt-8 font-serif text-lede text-ink-700">{s.lead}</p>
+              <p class="max-w-[520px] text-[15px] leading-[1.8] text-ink-600">{s.desc}</p>
+              <ul class="mt-8 grid max-w-[480px] list-none grid-cols-2 gap-x-6 gap-y-3 p-0">
+                {s.list.map((l) => (
+                  <li class="flex items-baseline gap-2 font-sans text-[13px] text-ink-700">
+                    <span class="font-mono text-[10px] text-accent">○</span>
+                    {l}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div
+              class="aspect-[4/5] bg-ink-200 bg-cover bg-center"
+              style={`background-image:url('${resolveImg(servicesImages[i] ?? '', photoFor(s.kind, s.seed + 2, { w: 900, h: 1200 }))}')`}
+              role="img"
+              aria-label={`${s.jp}のイメージ`}
+            />
+          </section>
+        </Shell>
+      ))
+    }
+  </PageWrap>
+</Base>

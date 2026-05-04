@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Shell from '../components/ui/Shell.astro';
+import Btn from '../components/ui/Btn.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import PageWrap from '../components/ui/PageWrap.astro';
+import { withBase } from '../utils/url';
+---
+
+<Base
+  title="404 — お探しのページが見つかりません | Moovit"
+  description="お探しのページは見つかりませんでした。"
+  noindex
+>
+  <PageWrap>
+    <Shell>
+      <section
+        class="flex min-h-[70vh] flex-col items-start justify-center gap-8 pb-16 pt-[140px]"
+      >
+        <Eyebrow>404 — Not Found</Eyebrow>
+        <h1 class="font-serif text-hero font-normal text-ink-900">
+          みつかりません。<br />
+          <em class="not-italic text-accent">遠くに行ったみたい。</em>
+        </h1>
+        <p class="max-w-[520px] text-[15px] leading-[1.8] text-ink-600">
+          お探しのページは存在しないか、移動した可能性があります。トップに戻って、もう一度たどってみてください。
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <Btn variant="primary" href={withBase('/')}>Go home</Btn>
+          <Btn variant="ghost" href={withBase('/works/')}>See works</Btn>
+        </div>
+      </section>
+    </Shell>
+  </PageWrap>
+</Base>

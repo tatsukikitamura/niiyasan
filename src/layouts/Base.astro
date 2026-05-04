@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { withBase } from '../utils/url';
+
+// LCP に効く critical font だけ preload。?url で Vite にハッシュ URL を解決させる。
+import cormorantLatin from '@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2?url';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import notoSerifJp from '@fontsource/noto-serif-jp/files/noto-serif-jp-japanese-400-normal.woff2?url';
+
+type JsonLd = Record<string, unknown>;
+
+export interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'article';
+  ogImage?: string;
+  canonical?: string;
+  jsonLd?: JsonLd | JsonLd[];
+  noindex?: boolean;
+  /** body に追加するクラス */
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  ogType = 'website',
+  ogImage,
+  canonical,
+  jsonLd,
+  noindex = false,
+  bodyClass = '',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={withBase('favicon.svg')} />
+
+    <!-- LCP critical font を preload。Hero は Cormorant Garamond / Noto Serif JP / Inter 主体 -->
+    <link rel="preload" as="font" type="font/woff2" href={cormorantLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={interLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={notoSerifJp} crossorigin />
+
+    <SEO
+      title={title}
+      description={description}
+      ogType={ogType}
+      ogImage={ogImage}
+      canonical={canonical}
+      jsonLd={jsonLd}
+      noindex={noindex}
+    />
+
+    <!-- sitemap-index.xml は @astrojs/sitemap が build 時に生成 -->
+    <link rel="sitemap" href={withBase('sitemap-index.xml')} />
+
+    <!-- JS 無効時に Reveal の中身が永遠に非表示にならないようにする (animation-timeline 未対応かつ JS なし) -->
+    <noscript>
+      <style>
+        .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
+      </style>
+    </noscript>
+  </head>
+  <body class={bodyClass}>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

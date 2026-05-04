@@ -1,0 +1,117 @@
+---
+import Icon from './icons.astro';
+import { withBase } from '../utils/url';
+
+const sitemap = [
+  { label: 'Home', href: withBase('/') },
+  { label: 'About', href: withBase('/about/') },
+  { label: 'Services', href: withBase('/services/') },
+  { label: 'Works', href: withBase('/works/') },
+  { label: 'Journal', href: withBase('/blog/') },
+  { label: 'Contact', href: withBase('/contact/') },
+];
+
+const services = [
+  { label: '動画制作', href: withBase('/services/') + '#visual' },
+  { label: '楽曲制作', href: withBase('/services/') + '#sonic' },
+  { label: 'イベント制作', href: withBase('/services/') + '#stage' },
+];
+
+// SNS のリンクは未確定。# は SEO 観点で望ましくないので、確定するまで href なしにせず、
+// 実体が決まるまでは項目を非表示にする方針。リスト要素自体は将来追加用に残す。
+const social: { label: string; href: string }[] = [];
+---
+
+<footer class="mt-32 bg-ink-900 pb-8 pt-24 text-ink-300">
+  <div class="mx-auto w-full max-w-shell px-gutter">
+    <div class="flex flex-wrap items-end justify-between gap-8 py-12">
+      <div class="font-serif text-footer-q text-ink-50 max-w-[700px]">
+        <em class="not-italic text-accent">つくる</em>こと、
+        <br />
+        一緒に始めませんか。
+      </div>
+      <a
+        href={withBase('/contact/')}
+        class="group inline-flex items-center gap-2 rounded-full bg-ink-50 px-8 py-[18px] font-mono text-[12px] uppercase tracking-[0.16em] text-ink-900 transition-colors duration-300 hover:bg-accent hover:text-ink-50"
+      >
+        Get in touch <Icon name="arrow" size={12} />
+      </a>
+    </div>
+
+    <div
+      class="grid grid-cols-2 gap-12 border-b border-[color-mix(in_srgb,var(--color-ink-300)_18%,transparent)] pb-16 lg:grid-cols-[1.4fr_1fr_1fr_1fr]"
+    >
+      <div class="col-span-2 flex flex-col gap-4 lg:col-span-1">
+        <div class="font-serif text-[36px] tracking-[-0.015em] text-ink-50">Moovit</div>
+        <p class="max-w-[320px] text-[13px] leading-[1.7] text-ink-400">
+          映像、音楽、イベント。表現することすべての裏側に、わたしたちはいます。
+        </p>
+      </div>
+
+      <div>
+        <h2 class="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-400">Sitemap</h2>
+        <ul class="m-0 flex list-none flex-col gap-2.5 p-0">
+          {
+            sitemap.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="text-[14px] text-ink-100 transition-colors duration-200 hover:text-accent"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-400">Services</h2>
+        <ul class="m-0 flex list-none flex-col gap-2.5 p-0">
+          {
+            services.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="text-[14px] text-ink-100 transition-colors duration-200 hover:text-accent"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {
+        social.length > 0 && (
+          <div>
+            <h2 class="mb-4 font-mono text-[10px] uppercase tracking-[0.2em] text-ink-400">
+              Connect
+            </h2>
+            <ul class="m-0 flex list-none flex-col gap-2.5 p-0">
+              {social.map((l) => (
+                <li>
+                  <a
+                    href={l.href}
+                    class="text-[14px] text-ink-100 transition-colors duration-200 hover:text-accent"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+
+    <div
+      class="flex flex-wrap items-center justify-between gap-6 border-t border-[color-mix(in_srgb,var(--color-ink-300)_18%,transparent)] pt-6 font-mono text-[11px] uppercase tracking-[0.12em] text-ink-400"
+    >
+      <div>© 2026 Moovit</div>
+      <div>東京都 / Tokyo, Japan</div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# 公開先: https://tatsuki.dev/niiyasan/
+# Sitemap は @astrojs/sitemap が build 時に生成する。site + base が反映される。
+# TODO: 独自ドメイン取得時はホスト名 + base 削除を反映させる。
+Sitemap: https://tatsuki.dev/niiyasan/sitemap-index.xml

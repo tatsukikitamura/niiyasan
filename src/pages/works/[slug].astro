@@ -1,0 +1,81 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Shell from '../../components/ui/Shell.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Btn from '../../components/ui/Btn.astro';
+import PageWrap from '../../components/ui/PageWrap.astro';
+import { resolveImg } from '../../utils/siteImages';
+import { photoFor } from '../../utils/placeholders';
+import { withBase } from '../../utils/url';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  return works.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data;
+
+const heroImage = resolveImg(data.image ?? '', photoFor(data.kind, data.seed, { w: 1600, h: 900 }));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: data.title,
+  description: data.description ?? data.subtitle,
+  dateCreated: data.year,
+  genre: data.category,
+  creator: { '@type': 'Organization', name: 'Moovit' },
+  image: heroImage.startsWith('http') ? heroImage : new URL(heroImage, Astro.site).toString(),
+};
+---
+
+<Base
+  title={`${data.title} — Works | Moovit`}
+  description={data.description ?? `${data.title}: ${data.subtitle}`}
+  ogType="article"
+  ogImage={heroImage.startsWith('http') ? heroImage : heroImage}
+  jsonLd={jsonLd}
+>
+  <PageWrap>
+    <Shell>
+      <section class="pb-12 pt-[120px] lg:pt-[140px]">
+        <div class="flex flex-col gap-6">
+          <div class="flex items-center gap-3">
+            <Eyebrow>{data.category}</Eyebrow>
+            <span class="font-mono text-[11px] tracking-[0.16em] text-ink-500">{data.year}</span>
+          </div>
+          <h1 class="font-serif text-h1 font-normal text-ink-900">{data.title}</h1>
+          <p class="font-serif text-lede text-ink-700">{data.subtitle}</p>
+        </div>
+      </section>
+    </Shell>
+
+    <Shell>
+      <div
+        class="my-8 aspect-[16/9] w-full overflow-hidden bg-ink-300 bg-cover bg-center"
+        style={`background-image:url('${heroImage}')`}
+        role="img"
+        aria-label={`${data.title}のキービジュアル`}
+      >
+      </div>
+    </Shell>
+
+    <Shell>
+      <article class="prose prose-ink mx-auto max-w-[760px] py-12 text-[16px] leading-[1.85] text-ink-800 [&_a]:text-accent [&_a]:underline [&_h2]:mt-12 [&_h2]:font-serif [&_h2]:text-h2 [&_h3]:mt-8 [&_h3]:font-serif [&_li]:my-1 [&_p]:my-4 [&_strong]:text-ink-900 [&_ul]:list-disc [&_ul]:pl-6">
+        <Content />
+      </article>
+    </Shell>
+
+    <Shell>
+      <div class="flex justify-between gap-6 border-t border-ink-200 py-12">
+        <Btn variant="ghost" href={withBase('/works/')} withArrow={false}>
+          ← All works
+        </Btn>
+        <Btn variant="primary" href={withBase('/contact/')}>Start a project</Btn>
+      </div>
+    </Shell>
+  </PageWrap>
+</Base>

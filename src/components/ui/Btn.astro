@@ -1,0 +1,49 @@
+---
+import Icon from '../icons.astro';
+
+type Variant = 'primary' | 'ghost';
+
+export interface Props {
+  /** デフォルト 'a'。submit などしたい場合のみ 'button'。 */
+  as?: 'a' | 'button';
+  variant?: Variant;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  withArrow?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  as = 'a',
+  variant = 'primary',
+  href,
+  type,
+  withArrow = true,
+  class: className = '',
+  ...rest
+} = Astro.props as Props;
+
+const base =
+  'group inline-flex cursor-pointer items-center gap-2.5 rounded-full px-7 py-4 font-mono text-[12px] uppercase tracking-[0.16em] transition-all duration-300';
+const variants: Record<Variant, string> = {
+  primary: 'bg-ink-900 text-ink-50 hover:bg-accent',
+  ghost:
+    'border border-ink-300 bg-transparent text-ink-800 hover:border-ink-800 hover:bg-ink-0',
+};
+const cls = `${base} ${variants[variant ?? 'primary']} ${className}`;
+---
+
+{
+  as === 'button' ? (
+    <button class={cls} type={type ?? 'button'} {...rest}>
+      <slot />
+      {withArrow && <Icon name="arrow" />}
+    </button>
+  ) : (
+    <a class={cls} href={href} {...rest}>
+      <slot />
+      {withArrow && <Icon name="arrow" />}
+    </a>
+  )
+}

@@ -1,0 +1,26 @@
+---
+import Eyebrow from './Eyebrow.astro';
+
+export interface Props {
+  /** 文字列 eyebrow を渡すと内部で Eyebrow にラップ。リッチに組みたいときは <Fragment slot="eyebrow"> を使う */
+  eyebrow?: string;
+  class?: string;
+}
+const { eyebrow, class: className = '' } = Astro.props;
+const hasRight = Astro.slots.has('right');
+const hasEyebrowSlot = Astro.slots.has('eyebrow');
+---
+
+<div
+  class={`mb-16 grid grid-cols-1 items-end gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-16 ${className}`}
+>
+  <div class="flex flex-col gap-4">
+    {hasEyebrowSlot ? <Eyebrow><slot name="eyebrow" /></Eyebrow> : eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
+    <h2 class="font-serif text-h1 font-normal text-ink-900"><slot name="title" /></h2>
+  </div>
+  {hasRight && (
+    <div class="max-w-[540px] text-ink-600">
+      <slot name="right" />
+    </div>
+  )}
+</div>

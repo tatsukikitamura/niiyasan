@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Shell from '../../components/ui/Shell.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import PageWrap from '../../components/ui/PageWrap.astro';
+import { resolveImg } from '../../utils/siteImages';
+import { photoFor } from '../../utils/placeholders';
+import { withBase } from '../../utils/url';
+
+const all = await getCollection('blog');
+const posts = all.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p.id !== featured?.id);
+
+const formatDate = (iso: string) => iso.replaceAll('-', '.');
+
+const featuredImg = featured
+  ? resolveImg(
+      featured.data.image ?? '',
+      photoFor(featured.data.kind, featured.data.seed, { w: 1400, h: 900 }),
+    )
+  : '';
+---
+
+<Base
+  title="Journal — Moovit | お知らせ・日々の記録"
+  description="Moovit のお知らせ、現場の覚え書き、アーティストとのインタビュー。仕事のニュースから日々の小さな記録まで、ここに残しています。"
+>
+  <PageWrap>
+    <Shell>
+      <section class="pb-16 pt-[120px] lg:pt-[140px]">
+        <Eyebrow>Journal — お知らせ・日々の記録</Eyebrow>
+        <h1 class="mt-6 font-serif text-hero font-normal text-ink-900">かきとめる。</h1>
+        <p class="mt-6 max-w-[640px] font-serif text-lede text-ink-700">
+          仕事のニュース、現場の覚え書き、アーティストとの会話。<br />
+          あなたが知る前に、わたしたちが忘れてしまわないように。
+        </p>
+      </section>
+    </Shell>
+
+    {
+      featured && (
+        <Shell>
+          <a
+            href={withBase(`/blog/${featured.id}/`)}
+            class="group grid grid-cols-1 items-center gap-12 border-y border-ink-200 py-12 lg:grid-cols-[1.4fr_1fr]"
+            aria-label={`${featured.data.title} を読む`}
+          >
+            <div class="aspect-[16/10] overflow-hidden bg-ink-300">
+              <div
+                class="h-full w-full bg-cover bg-center transition-transform duration-700 ease-smooth group-hover:scale-[1.04]"
+                style={`background-image:url('${featuredImg}')`}
+              />
+            </div>
+            <div>
+              <div class="mb-4 flex items-center gap-3">
+                <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
+                  Featured
+                </span>
+                <span class="font-mono text-[12px] tracking-[0.04em] text-ink-500">
+                  {formatDate(featured.data.date)}
+                </span>
+                <span class="rounded-full border border-ink-300 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-700">
+                  {featured.data.category}
+                </span>
+              </div>
+              <h2 class="mb-4 font-serif text-blog-feature font-normal text-ink-900">
+                {featured.data.title}
+              </h2>
+              {featured.data.excerpt && (
+                <p class="mb-6 text-[15px] leading-[1.75] text-ink-600">{featured.data.excerpt}</p>
+              )}
+              <span class="inline-flex items-center gap-2.5 rounded-full border border-ink-300 px-7 py-4 font-mono text-[12px] uppercase tracking-[0.16em] text-ink-800 transition-all duration-300 group-hover:border-ink-800 group-hover:bg-ink-0">
+                Read more
+              </span>
+            </div>
+          </a>
+        </Shell>
+      )
+    }
+
+    <Shell>
+      <div class="pt-12">
+        {
+          rest.map((p) => (
+            <a
+              href={withBase(`/blog/${p.id}/`)}
+              class="group grid grid-cols-1 items-center gap-2 border-b border-ink-200 py-6 transition-[padding] duration-300 hover:pl-3 lg:grid-cols-[110px_200px_1fr_100px] lg:gap-8"
+            >
+              <div class="font-mono text-[12px] tracking-[0.04em] text-ink-500">
+                {formatDate(p.data.date)}
+              </div>
+              <div class="w-fit rounded-full border border-ink-300 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-700">
+                {p.data.category}
+              </div>
+              <h2 class="font-serif text-[19px] font-normal leading-[1.35] tracking-[-0.005em] text-ink-900">
+                {p.data.title}
+              </h2>
+              <div class="font-mono text-[14px] text-ink-500 transition-[transform,color] duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent lg:justify-self-end">
+                ↗
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </Shell>
+  </PageWrap>
+</Base>

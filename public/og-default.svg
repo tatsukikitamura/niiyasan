@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- TODO: 本番前に 1200x630 の PNG/JPG 画像 (public/og-default.png) に差し替える。
+       OGP は SVG をサポートしないクローラが多いため、PNG 化が必須。 -->
+  <rect width="1200" height="630" fill="#0e0d0c"/>
+  <circle cx="930" cy="180" r="180" fill="#d94a1f" opacity="0.16"/>
+  <circle cx="80" cy="540" r="120" fill="#d94a1f" opacity="0.10"/>
+  <text x="80" y="290" fill="#d94a1f" font-family="serif" font-size="36" font-style="italic" letter-spacing="6">MOOVIT</text>
+  <text x="80" y="400" fill="#fafaf9" font-family="serif" font-size="84" font-weight="500">つくる人の、</text>
+  <text x="80" y="500" fill="#fafaf9" font-family="serif" font-size="84" font-weight="500" font-style="italic">そばに。</text>
+  <text x="80" y="580" fill="#9c9a92" font-family="monospace" font-size="20" letter-spacing="3">VISUAL · MUSIC · STAGE — TOKYO</text>
+</svg>

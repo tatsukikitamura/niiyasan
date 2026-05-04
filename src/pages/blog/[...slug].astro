@@ -1,0 +1,103 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Shell from '../../components/ui/Shell.astro';
+import Btn from '../../components/ui/Btn.astro';
+import PageWrap from '../../components/ui/PageWrap.astro';
+import { resolveImg } from '../../utils/siteImages';
+import { photoFor } from '../../utils/placeholders';
+import { withBase } from '../../utils/url';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const data = entry.data;
+
+const heroImage = resolveImg(
+  data.image ?? '',
+  photoFor(data.kind, data.seed, { w: 1600, h: 900 }),
+);
+
+const formatDate = (iso: string) => iso.replaceAll('-', '.');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description: data.description ?? data.excerpt ?? data.title,
+  datePublished: data.date,
+  author: { '@type': 'Organization', name: 'Moovit' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Moovit',
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL(withBase('favicon.svg'), Astro.site).toString(),
+    },
+  },
+  image: heroImage.startsWith('http') ? heroImage : new URL(heroImage, Astro.site).toString(),
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+};
+---
+
+<Base
+  title={`${data.title} — Journal | Moovit`}
+  description={data.description ?? data.excerpt ?? data.title}
+  ogType="article"
+  ogImage={heroImage}
+  jsonLd={jsonLd}
+>
+  <PageWrap>
+    <Shell>
+      <section class="pb-12 pt-[120px] lg:pt-[140px]">
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-[12px] tracking-[0.04em] text-ink-500">
+            {formatDate(data.date)}
+          </span>
+          <span
+            class="rounded-full border border-ink-300 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-700"
+          >
+            {data.category}
+          </span>
+        </div>
+        <h1 class="mt-6 max-w-[820px] font-serif text-h1 font-normal text-ink-900">
+          {data.title}
+        </h1>
+        {data.excerpt && (
+          <p class="mt-6 max-w-[640px] font-serif text-lede text-ink-700">{data.excerpt}</p>
+        )}
+      </section>
+    </Shell>
+
+    <Shell>
+      <div
+        class="my-8 aspect-[16/9] w-full overflow-hidden bg-ink-300 bg-cover bg-center"
+        style={`background-image:url('${heroImage}')`}
+        role="img"
+        aria-label={`${data.title}のキービジュアル`}
+      >
+      </div>
+    </Shell>
+
+    <Shell>
+      <article
+        class="prose prose-ink mx-auto max-w-[760px] py-12 text-[16px] leading-[1.85] text-ink-800 [&_a]:text-accent [&_a]:underline [&_h2]:mt-12 [&_h2]:font-serif [&_h2]:text-h2 [&_h3]:mt-8 [&_h3]:font-serif [&_li]:my-1 [&_p]:my-4 [&_strong]:text-ink-900 [&_ul]:list-disc [&_ul]:pl-6"
+      >
+        <Content />
+      </article>
+    </Shell>
+
+    <Shell>
+      <div class="flex justify-between gap-6 border-t border-ink-200 py-12">
+        <Btn variant="ghost" href={withBase('/blog/')} withArrow={false}>
+          ← All entries
+        </Btn>
+        <Btn variant="primary" href={withBase('/contact/')}>Get in touch</Btn>
+      </div>
+    </Shell>
+  </PageWrap>
+</Base>

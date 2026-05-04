@@ -1,0 +1,32 @@
+---
+// CSS animation-timeline: view() を第一候補にし、未対応ブラウザでは
+// IntersectionObserver で data-shown を立てる小さな island で fallback する。
+// global.css の @supports 分岐で見え方を切替えている。
+export interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['reveal', className]} data-shown="false">
+  <slot />
+</div>
+
+<script>
+  // animation-timeline: view() がサポートされていれば JS は何もしない。
+  if (!CSS.supports('animation-timeline: view()')) {
+    const els = document.querySelectorAll<HTMLElement>('.reveal');
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).dataset.shown = 'true';
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.1 },
+    );
+    els.forEach((el) => io.observe(el));
+  }
+</script>

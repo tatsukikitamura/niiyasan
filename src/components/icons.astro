@@ -1,0 +1,41 @@
+---
+// 静的に SVG を返すだけのコンポーネント群。Astro Frontmatter で props を受ける。
+// 単一ファイルで Logo / Arrow / ArrowDiag を切替えられるよう name で分岐する。
+export interface Props {
+  name: 'logo' | 'arrow' | 'arrow-diag';
+  size?: number;
+  class?: string;
+}
+const { name, size = 14, class: className = '' } = Astro.props;
+---
+
+{
+  name === 'logo' && (
+    <svg width={size || 22} height={size || 22} viewBox="0 0 24 24" fill="none" class={className}>
+      <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1" />
+      <path d="M6 12 Q12 4 18 12 Q12 20 6 12 Z" fill="currentColor" />
+    </svg>
+  )
+}
+
+{
+  name === 'arrow' && (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 14 14"
+      fill="none"
+      class={`transition-transform duration-300 group-hover:translate-x-1 ${className}`}
+    >
+      <path d="M1 7H13M13 7L8 2M13 7L8 12" stroke="currentColor" stroke-width="1.2" />
+    </svg>
+  )
+}
+
+{
+  name === 'arrow-diag' && (
+    <svg width={size} height={size} viewBox="0 0 12 12" fill="none" class={className}>
+      <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.2" />
+    </svg>
+  )
+}

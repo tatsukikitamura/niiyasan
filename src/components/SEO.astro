@@ -1,0 +1,69 @@
+---
+type JsonLd = Record<string, unknown>;
+
+export interface Props {
+  title: string;
+  description: string;
+  /** og:type. 既定は 'website'。記事系は 'article'。 */
+  ogType?: 'website' | 'article';
+  /** 絶対 or サイトルート相対の OG 画像 URL。未指定なら /og-default.png
+   * TODO: 現状は public/og-default.svg しか入っていない。OGP クローラが SVG 非対応の
+   * ものが多いため、本番デプロイ前に 1200x630 の PNG を public/og-default.png に置く。 */
+  ogImage?: string;
+  /** 既定で現在 URL の絶対形を canonical に。明示で上書き可。 */
+  canonical?: string;
+  /** ページ単位で差し込む JSON-LD。配列で複数可。 */
+  jsonLd?: JsonLd | JsonLd[];
+  /** 検索エンジンに見せたくない場合のみ true */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogType = 'website',
+  ogImage = '/og-default.png',
+  canonical,
+  jsonLd,
+  noindex = false,
+} = Astro.props;
+
+const SITE_NAME = 'Moovit';
+// Astro.site は astro.config.mjs の site (URL オブジェクト)。
+const siteUrl = Astro.site ?? new URL('https://tatsuki.dev/');
+const baseUrl = import.meta.env.BASE_URL; // '/niiyasan/' (末尾スラッシュ付き)
+
+// Astro.url.pathname は base を含む (例: '/niiyasan/about/') ので、site と組み合わせるだけで OK。
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname.replace(/^\//, ''), siteUrl).toString();
+
+// ogImage が絶対 URL ならそのまま、相対なら base + path を site に被せる。
+const ogImageUrl = ogImage.startsWith('http')
+  ? ogImage
+  : new URL((baseUrl + ogImage.replace(/^\//, '')).replace(/^\//, ''), siteUrl).toString();
+
+const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+{noindex && <meta name="robots" content="noindex,nofollow" />}
+
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:locale" content="ja_JP" />
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+{
+  jsonLdArray.map((data) => (
+    <script type="application/ld+json" set:html={JSON.stringify(data)} is:inline />
+  ))
+}
